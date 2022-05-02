@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: example-component
+  description: Example Component
+spec:
+  type: service
+  lifecycle: experimental
+  owner: team-a
+  system: example-system
+  providesApis: # list of APIs provided by the Component
+    - example-api-1
+  consumesApis: # list of APIs consumed by the Component
+    - example-api-2
