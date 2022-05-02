@@ -1,22 +1,72 @@
 apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: tap-demo-domain
+  description: Demo Domain for Tanzu Application Platform partners
+  annotations:
+    'backstage.io/techdocs-ref': dir:.
+spec:
+  owner: tap-demo-team
+
+---
+
+apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: example-component
-  description: Example Component
+  name: demo-app-ms-1
+  description: Demo Application's Microservice-1
+  tags:
+    - microservice
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=demo-app-ms-1'
+    'backstage.io/techdocs-ref': dir:.
 spec:
   type: service
-  lifecycle: experimental
-  owner: team-a
-  system: example-system
-  providesApis: # list of APIs provided by the Component
-    - example-api-1
-  consumesApis: # list of APIs consumed by the Component
-    - example-api-2
+  providesApis:
+   - demo-api
+  lifecycle: alpha
+  owner: tap-demo-team
+  system: tap-demo-app
+
 ---
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: demo-app-ms-2
+  description: Demo Application's Microservice-2
+  tags:
+    - microservice
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=demo-app-ms-2'
+    'backstage.io/techdocs-ref': dir:.
+spec:
+  type: service
+  consumesApis:
+   - demo-api
+  lifecycle: alpha
+  owner: tap-demo-team
+  system: tap-demo-app
+
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: tap-demo-app
+  description: Demo Application for Tanzu Application Platform
+  annotations:
+    'backstage.io/techdocs-ref': dir:.
+spec:
+  owner: tap-demo-team
+  domain: tap-demo-domain
+
+---
+
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: demo-api
+  name: tap-demo-api
   description: The demo API for Tanzu Application Platform GUI
   links:
     - url: https://api.agify.io
@@ -25,12 +75,12 @@ metadata:
 spec:
   type: openapi
   lifecycle: experimental
-  owner: demo-team
-  system: demo-app # Or specify system name of your choice
+  owner: tap-demo-team
+  system: tap-demo-app # Or specify system name of your choice
   definition: |
     openapi: 3.0.1
     info:
-      title: defaultTitle
+      title: Demo API
       description: defaultDescription
       version: '0.1'
     servers:
@@ -52,4 +102,4 @@ spec:
                 application/json; charset=utf-8:
                   schema:
                     type: string
-                  examples: {}        
+                  examples: {}
